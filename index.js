@@ -58,16 +58,24 @@ async function run() {
       const options = { upsert: true };
       const updateDoc = {
         $set: {
-          image : data.image, 
-          title : data.title, 
-          price : data.price, 
-          description : data.description
+          image: data.image,
+          title: data.title,
+          price: data.price,
+          description: data.description,
         },
       };
       const result = await database.updateOne(filter, updateDoc, options);
-      res.send(result)
+      res.send(result);
     });
 
+    //delete product
+    app.delete("/product/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await database.deleteOne(query);
+      res.send(result);
+    });
+    
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
