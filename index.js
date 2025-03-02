@@ -9,6 +9,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+
 //mongodb
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.xu3a3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -26,6 +27,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const database = client.db("bambo_brush").collection("products");
+    const usersDatabase = client.db("bambo_brush").collection("users");
 
     //get product
     app.get("/product", async (req, res) => {
@@ -75,6 +77,20 @@ async function run() {
       const result = await database.deleteOne(query);
       res.send(result);
     });
+
+    //Users Api create
+    app.get("/users", async (req, res) => {
+      const cursor = usersDatabase.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.post('/users', async(req, res)=>{
+      const usersInfo = req.body
+      console.log(usersInfo);
+      const result = await usersDatabase.insertOne(usersInfo);
+      res.send(result)
+    })
     
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
