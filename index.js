@@ -91,6 +91,28 @@ async function run() {
       const result = await usersDatabase.insertOne(usersInfo);
       res.send(result)
     })
+
+    //update User
+    app.patch("/users/", async (req, res) => {
+      const email = req.body.email;
+      const filter = { email };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          lastSignInTime : req.body.lastSignInTime
+        },
+      };
+      const result = await usersDatabase.updateOne(filter, updateDoc, options);
+      res.send(result);
+    });
+
+     //Delete user
+     app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await usersDatabase.deleteOne(query);
+      res.send(result);
+    });
     
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
