@@ -133,3 +133,6 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on PORT : ${port}`);
 });
+
+// Export the Express API
+module.exports = app;
