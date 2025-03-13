@@ -130,7 +130,8 @@ app.get("/", (req, res) => {
   res.send("User Management Server is running");
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on PORT : ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server is running on PORT : ${port}`);
+// });
 
+module.exports = app;
